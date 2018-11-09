@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
     <%@page isELIgnored="false"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"  %>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -103,18 +105,19 @@ p.title {
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav">	
       <li class="active"><a href="<c:url value='/home'></c:url>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      <li><a href="<c:url value='/all/addproduct'></c:url>"> <span class="glyphicon glyphicon-plus"></span> Add Product</a>
+      <li><a href="<c:url value='/admin/addproduct'></c:url>"> <span class="glyphicon glyphicon-plus"></span> Add Product</a>
+     <li><a href="<c:url value='/admin/getcategoryform'></c:url>"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add Category</a></li>
       <li><a href="<c:url value='/all/getallproducts/'></c:url>"><span class="glyphicon glyphicon-search"></span> Browse All Product</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-pencil"></span> Select By Category
-       <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#"> Kitchen and Dining</a></li>
-		  <li><a href="#"> Furniture</a><li>
-		  <li><a href="#"> All</a></li>
-        </ul>
-      </li>
-      <li><a href="#"><span class="glyphicon glyphicon-registration-mark"></span> Sign Up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+    <li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">Select By Category<span class="caret"></span></a>
+					
+				<ul class="dropdown-menu">
+				<c:forEach items="${categories}" var="c">
+				<li><a href="<c:url value='/all/searchByCategory?searchCondition=${c.categoryname}'></c:url>">${c.categoryname}</a></li>
+				</c:forEach>
+				</ul>
+</li>
+<li><a href="<c:url value='/all/getregistrationform'></c:url>"><span class="glyphicon glyphicon-registration-mark"></span>&nbsp;Sign Up</a></li>	 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
       <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
     </ul>
     </div>

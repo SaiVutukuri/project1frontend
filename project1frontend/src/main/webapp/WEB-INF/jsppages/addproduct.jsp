@@ -1,24 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@include file="header.jsp" %>
+       <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"  %>
+  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>PRODUCT INSERT FORM</title>
 </head>
 <body>
-<div class="container">
+<%--<div class="container">--%>
+<form action="<c:url value='/admin/addproduct'></c:url>"method="get">
 <table align="center" border="1" class="table table-sm">
 
-<tbody>
-<tr><td><font color="white">PRODUCT NAME</font></td><td><font color="white">${productAttr.productname}</font></td></tr>
-<tr><td><font color="white">PRODUCT DESCRIPTION</font></td><td><font color="white">${productAttr.productdesc}</font></td></tr>
-<tr><td><font color="white">PRODUCT PRICE</font></td><td><font color="white">${productAttr.price}</font></td></tr>
-<tr><td><font color="white">PRODUCT IN STOCK</font></td><td><font color="white">${productAttr.quantity}</font></td></tr>
-<tr><td><a href="<c:url value='#'></c:url>"><button class="btn btn-sm btn-active">ADD TO CART</button></a></td><td><a href="<c:url value='/all/getallproducts/'></c:url>"><button class="btn btn-sm btn-active">BACK TO PREVIOUS PAGE</button></a></td></tr>
-</tbody>
+<body>
+<tr><td><b>PRODUCT NAME</td><td><input type="text" name="name" placeholder="  ENTER PRODUCT NAME" size="35"></td></tr>
+<tr><td><b>PRODUCT DESCRIPTION</td><td><input type="text" name="description" placeholder="  ENTER PRODUCT DESCRIPTION" size="35"></td></tr>
+<tr><td><b>PRODUCT QUANTITY</td><td><input type="text" name="quantity" placeholder="  ENTER PRODUCT QUANTITY" size="35"></td></tr>
+<tr><td><b>PRODUCT PRICE</td><td><input type="text" name="price" placeholder="  ENTER PRODUCT PRICE" size="35"></td></tr>
+<!-- <tr><td><b></td><td><input type="submit" value="ADD PRODUCT"></td> -->
+
+</body>
 </table>
+</form>
 </div>
 </body>
 </html>

@@ -2,14 +2,19 @@ package com.niit.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,113 +23,150 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.niit.configuration.DBConfiguration;
+import com.niit.daoimpl.ProductDaoImpl;
 import com.niit.models.Category;
 import com.niit.models.Product;
 import com.niit.services.ProductService;
+import com.niit.servicesimpl.ProductServiceImpl;
 
 @Controller
 public class ProductController {
-	@Autowired
-private ProductService 	productService;
-public ProductController(){
-	System.out.println("productController bean is created");
+@Autowired
+private ProductService ps;
+ApplicationContext ac = new AnnotationConfigApplicationContext(DBConfiguration.class, ProductDaoImpl.class, ProductServiceImpl.class);
+ProductService pds = (ProductService)ac.getBean("productServiceImpl");
+public ProductController() {
+	System.out.println("Product Controller Bean has been created");
 }
-//url to request this method is http://localhost:8080/project1frontend/all/getallproducts
-@RequestMapping(value="/all/getallproducts")
-public String getAllProducts(Model model){
-	List<Product> products=productService.getAllProducts();//get the data call service
-	model.addAttribute("products",products);//to Send the data to JSP (UI) page use Model
-	return "listofproducts"; // jsp page name, logical view name
+@RequestMapping(value="/all/getallproducts/")
+public String getAllProducts(Model m, HttpSession session)
+{
+	List<Product> products = ps.getAllProducts();
+	m.addAttribute("product",products);
+	session.setAttribute("categories", ps.getAllCategories());
+	return "listofproducts";
 }
-@RequestMapping(value="/all/getproduct")
-public String getProduct(@RequestParam int id,Model model){
-	Product product=productService.selectProducts(id);//get product object from the service
-	  model.addAttribute("productAttr",product);//send the data to the jsp page
-	  return "viewproduct";
+@RequestMapping(value="/all/getproducts")
+public String getProduct(@RequestParam int id,Model m)
+{
+	Product products = ps.selectProducts(id);
+	m.addAttribute("productAttr",products);
+	return "viewproduct";
 }
-
 @RequestMapping(value="/admin/deleteproduct")
-public String deleteProduct(@RequestParam int id){
-	productService.deleteProducts(id);
-	return "redirect:/all/getallproducts";
-	
+public String deleteProduct(@RequestParam int id,Model m)
+{
+    ps.deleteProducts(id);
+	return "redirect:/all/getallproducts/";
 }
-
-@RequestMapping(value="/admin/getproductform")//to get productform.jsp 
-public String getProductForm(Model model){
+@RequestMapping(value="/admin/getproductform")
+public String getProductForm(Model model)
+{
 	Product p=new Product();
-	model.addAttribute("product",p);//p is newly created product object which has default values
-	List<Product> categories=productService.getAllProducts();
+	model.addAttribute("product",p);
+	List<Category> categories=ps.getAllCategories();
 	model.addAttribute("categories",categories);
-	return "productform";//send a new product object to productform.jsp
+  return "productform";
 }
-@RequestMapping(value="/admin/addproduct")//form in productform.jsp is submitted
-public String addProduct(@Valid @ModelAttribute Product product,BindingResult result,Model model,HttpServletRequest request){	
-	if(result.hasErrors()){//after validation if any errors
-		List<Product> categories=productService.getAllProducts();
+@RequestMapping(value="/admin/getcategoryform")
+public String getCategoryForm(Model model)
+{
+	Category c=new Category();
+	model.addAttribute("category",c);
+  return "categoryform";
+}
+@RequestMapping(value="/admin/addcategory")
+public String addCategory(@Valid @ModelAttribute Product p,BindingResult result)
+{
+	if(result.hasErrors())
+	{
+		
+		return "categoryform";
+		
+	}
+	ps.addProduct(p);
+	return "redirect:/admin/getproductform/";
+}
+@RequestMapping(value="/admin/addproduct")
+public String addProduct(@Valid @ModelAttribute Product p, BindingResult result,Model model, HttpServletRequest request)
+{
+	if(result.hasErrors())
+	{
+		List<Category> categories=ps.getAllCategories();
 		model.addAttribute("categories",categories);
 		return "productform";
+		
 	}
-	productService.addProduct(product);//in dao session.save(product)
-	MultipartFile img=product.getImage();
-	System.out.println(request.getServletContext().getRealPath("/"));
-	
-	//Defining a path
-	Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+product.getId()+".png");
-	
-	//Create a file in the path
-	
-	try {
-		if(img!=null && !img.isEmpty()){
-		File file=new File(path.toString());
-		img.transferTo(file);
-		}
-	} catch (IllegalStateException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return "redirect:/all/getallproducts";
+ps.addProduct(p);
+MultipartFile img=p.getImage();
+System.out.println(request.getServletContext().getRealPath("/"));
+
+
+Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+p.getId()+".png");
+File file = new File(path.toString());
+try
+{
+	img.transferTo(file);
+}
+catch(IllegalStateException e)
+{
+	e.printStackTrace();
+}
+catch(IOException e1)
+{
+	e1.printStackTrace();
+}
+return "redirect:/all/getallproducts/";
 }
 @RequestMapping(value="/admin/getupdateproductform")
-public String getUpdateProductForm(@RequestParam int id,Model model){
-	Product product=productService.selectProducts(id);
-	model.addAttribute("product",product);
-	List<Product> categories=productService.getAllProducts();
+public String getUpdateProductForm(@RequestParam int id, Model model)
+{
+	Product p=ps.selectProducts(id);
+	model.addAttribute("product",p);
+	List<Category> categories=ps.getAllCategories();
 	model.addAttribute("categories",categories);
-	return "updateproductform";
+  return "updateproductform";
 }
 @RequestMapping(value="/admin/updateproduct")
-public String updateProduct(@Valid @ModelAttribute Product product,BindingResult result,Model model,HttpServletRequest request){
-	if(result.hasErrors()){
-		List<Product> categories=productService.getAllProducts();
+public String updateProduct(@Valid @ModelAttribute Product product, BindingResult result,Model model, HttpServletRequest request)
+{
+	if(result.hasErrors())
+	{
+		List<Category> categories=ps.getAllCategories();
 		model.addAttribute("categories",categories);
 		return "updateproductform";
 	}
-	productService.updateProduct(product);
-	MultipartFile img=product.getImage();
-	System.out.println(request.getServletContext().getRealPath("/"));
-	
-	//Defining a path
-	Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+product.getId()+".png");
-	
-	//Create a file in the path
-	
-	try {
-		if(img!=null && !img.isEmpty()){
-		File file=new File(path.toString());
-		img.transferTo(file);
-		}
-	} catch (IllegalStateException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-	return "redirect:/all/getallproducts";
+ps.updateProduct(product);
+MultipartFile img=product.getImage();
+System.out.println(request.getServletContext().getRealPath("/"));
+
+
+Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+product.getId()+".png");
+File file = new File(path.toString());
+try
+{
+	img.transferTo(file);
+}
+catch(IllegalStateException e)
+{
+	e.printStackTrace();
+}
+catch(IOException e1)
+{
+	e1.printStackTrace();
+}
+return "redirect:/all/getallproducts/";
+}
+@RequestMapping(value="/all/searchByCategory")
+public String searchByCategory(@RequestParam String searchCondition, Model model)
+{
+	if(searchCondition.equals("All"))
+	model.addAttribute("searchCondition","");
+	else
+	model.addAttribute("searchCondition",searchCondition);
+	List<Product> products = ps.getAllProducts();
+	model.addAttribute("product",products);
+  return "listofproducts";
 }
 }
