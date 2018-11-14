@@ -14,7 +14,7 @@
 <table align="center"border="1" class="table table">
 <caption><h2><center><font color="white">ADD PRODUCT</font></center></h2></caption>
  <tr><td><b><font color="white">ENTER PRODUCT NAME</td><td><form:input path="productname"/></td><td><form:errors path="productname" cssStyle="color:white"/></td></tr>
-<tr><td><b><font color="white">ENTER PRODUCT DESCRIPTION</td><td><form:textarea path="productdesc"/></td><td><form:errors path="productdesc" cssStyle="color:white"/></td></tr>
+<tr><td><b><font color="white">ENTER PRODUCT DESCRIPTION</td><td><form:textarea path="productdesc" width="100"/></td><td><form:errors path="productdesc" cssStyle="color:white"/></td></tr>
 <tr><td><b><font color="white">ENTER PRODUCT QUANTITY</td><td><form:input path="quantity"/></td><td><form:errors path="quantity" cssStyle="color:white"/></td></tr>
 <tr><td><b><font color="white">ENTER PRODUCT PRICE</td><td><form:input path="price"/></td><td><form:errors path="price" cssStyle="color:white"/></td></tr>
 <tr><td><b><font color="white">SELECT THE CATEGORY</td>
@@ -23,12 +23,6 @@
 <form:option value="${c.id}">${c.categoryname}</form:option>
 </c:forEach>
 </form:select>
-<%-- <form:option value="1">FURNITURE</form:option>
-<form:option value="2">EDUCATIONAL BOOKS</form:option>
-<form:option value="3">ELECTRONIC ITEMS</form:option>
-<form:option value="4">KIDS AND TOYS</form:option>
-<form:option value="5">CLOTHES</form:option>
-<form:option value="6">OTHERS</form:option> --%>
 </td>
 </tr>
 <%-- <td><form:errors path="category" cssStyle="color:white"/></td></tr> --%>

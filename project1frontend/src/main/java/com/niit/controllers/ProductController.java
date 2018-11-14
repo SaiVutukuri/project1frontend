@@ -30,6 +30,11 @@ import com.niit.models.Product;
 import com.niit.services.ProductService;
 import com.niit.servicesimpl.ProductServiceImpl;
 
+
+
+
+
+
 @Controller
 public class ProductController {
 @Autowired
@@ -77,7 +82,7 @@ public String getCategoryForm(Model model)
   return "categoryform";
 }
 @RequestMapping(value="/admin/addcategory")
-public String addCategory(@Valid @ModelAttribute Product p,BindingResult result)
+public String addCategory(@Valid @ModelAttribute Category category,BindingResult result)
 {
 	if(result.hasErrors())
 	{
@@ -85,11 +90,11 @@ public String addCategory(@Valid @ModelAttribute Product p,BindingResult result)
 		return "categoryform";
 		
 	}
-	ps.addProduct(p);
+	ps.addCategory(category);
 	return "redirect:/admin/getproductform/";
 }
 @RequestMapping(value="/admin/addproduct")
-public String addProduct(@Valid @ModelAttribute Product p, BindingResult result,Model model, HttpServletRequest request)
+public String addProduct(@Valid @ModelAttribute Product product, BindingResult result,Model model, HttpServletRequest request)
 {
 	if(result.hasErrors())
 	{
@@ -98,12 +103,11 @@ public String addProduct(@Valid @ModelAttribute Product p, BindingResult result,
 		return "productform";
 		
 	}
-ps.addProduct(p);
-MultipartFile img=p.getImage();
+ps.addProduct(product);
+MultipartFile img=product.getImage();
 System.out.println(request.getServletContext().getRealPath("/"));
-
-
-Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+p.getId()+".png");
+Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/img/"+product.getId()+".png");
+//Path path=Paths.get("D:\\RAVITEJA\\S191174100164\\workspace\\ecommerceprojectfrontend\\src\\main\\webapp\\WEB-INF\\resources\\images\\"+product.getId()+".png");
 File file = new File(path.toString());
 try
 {
@@ -140,9 +144,7 @@ public String updateProduct(@Valid @ModelAttribute Product product, BindingResul
 ps.updateProduct(product);
 MultipartFile img=product.getImage();
 System.out.println(request.getServletContext().getRealPath("/"));
-
-
-Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/images/"+product.getId()+".png");
+Path path=Paths.get(request.getServletContext().getRealPath("/")+"/WEB-INF/resources/img/"+product.getId()+".png");
 File file = new File(path.toString());
 try
 {

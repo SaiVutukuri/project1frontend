@@ -8,15 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.niit.configuration.DBConfiguration;
 import com.niit.models.Customer;
-import com.niit.services.ProductService;
+import com.niit.services.CustomerService;
 
 
 @Controller
 public class CustomerController {
 @Autowired
-private ProductService cs;
+private CustomerService cs;
 /*ApplicationContext ac = new AnnotationConfigApplicationContext(H2Configuration.class, CustomerDaoImpl.class, CustomerServiceImpl.class);
 CustomerService pds = (CustomerService)ac.getBean("customerServiceImpl");*/
 @RequestMapping(value="/all/getregistrationform")

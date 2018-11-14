@@ -33,12 +33,14 @@ $(document).ready(function()
 
 <tbody>
 <c:forEach items="${product }" var="p">
-<tr><td> <img src="<c:url value='/resources/images/${p.id}.png'></c:url>" height="100px" width="220px"></td><td><font color="black"><c:out value="${p.productname}"></c:out></font></td><%-- <td><font color="white"><c:out value="${p.productdesc}"></c:out></font></td><td><font color="white"><c:out value="${p.quantity}"></c:out></font></td> --%><td><font color="black"><c:out value="${p.price}"></c:out></font></td>
+<tr><td> <img src="<c:url value='/resources/img/${p.id}.png'></c:url>" height="100px" width="220px"></td><td><font color="black"><c:out value="${p.productname}"></c:out></font></td><%-- <td><font color="white"><c:out value="${p.productdesc}"></c:out></font></td><td><font color="white"><c:out value="${p.quantity}"></c:out></font></td> --%><td><font color="black"><c:out value="${p.price}"></c:out></font></td>
 <td><font color="black"><c:out value="${p.category.categoryname}"></c:out></td>
 <td>
 <a href="<c:url value='/all/getproducts?id=${p.id}'></c:url>"><span class="glyphicon glyphicon-info-sign"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<security:authorize access="hasRole('ROLE_ADMIN')">
 <a href="<c:url value='/admin/deleteproduct?id=${p.id}'></c:url>"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="<c:url value='/admin/getupdateproductform?id=${p.id}'></c:url>"><span class="glyphicon glyphicon-pencil"></span></a>
+</security:authorize>
 </td>
 </tr>
 </c:forEach>

@@ -6,24 +6,48 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<style type="text/css">
+ #myVideo {
+    position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  transform: translate(-50%, -50%);;
+} 
+
+</style> 
+
+  
 </head>
 <body>
-<div class="container"> 
+
+<div class="container">
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
       <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="<c:url value='/resources/img/bag.png'></c:url>" alt="Los Angeles" style="width:100%;">
+        <img src="<c:url value='/resources/img/sh.jpg'></c:url>" alt="Banner1" style="width:100%;">
       </div>
-
       <div class="item">
-        <img src="<c:url value='/resources/img/sh.jpg'></c:url>" alt="Chicago" style="width:100%;">
+        <img src="<c:url value='/resources/img/c1.jpg'></c:url>" alt="Banner2" style="width:100%;">
+      </div>
+       <div class="item">
+        <img src="<c:url value='/resources/img/s1.jpg'></c:url>" alt="Banner3" style="width:100%;">
+      </div>
+       <div class="item">
+        <img src="<c:url value='/resources/img/s2.jpg'></c:url>" alt="Banner4" style="width:100%;">
       </div>
     </div>
 
@@ -40,12 +64,14 @@
 </div>
 <br>
 <div align="center">
-<div class="row"> 
+
+<div  class="row">
 <div class="column">
 <div class="flip-box">
   <div class="flip-box-inner">
     <div class="flip-box-front">
-      <img src="<c:url value='/resources/img/i1.jpg'></c:url>" alt="Paris" style="width:300px;height:200px">
+   
+      <img src="<c:url value='/resources/img/i1.jpg'></c:url>" alt="Offer1" style="width:300px;height:200px">
     </div>
     <div class="flip-box-back">
       <h2>Hot Deals</h2>
@@ -58,7 +84,7 @@
 <div class="flip-box">
   <div class="flip-box-inner">
     <div class="flip-box-front">
-      <img src="<c:url value='/resources/img/i2.jpg'></c:url>" alt="Paris" style="width:300px;height:200px">
+      <img src="<c:url value='/resources/img/i2.jpg'></c:url>" alt="Offer2" style="width:300px;height:200px">
     </div>
     <div class="flip-box-back">
       <h2>All Offers</h2>
@@ -71,7 +97,7 @@
 <div class="flip-box">
   <div class="flip-box-inner">
     <div class="flip-box-front">
-      <img src="<c:url value='/resources/img/i3.jpg'></c:url>" alt="Paris" style="width:300px;height:200px">
+      <img src="<c:url value='/resources/img/i3.jpg'></c:url>" alt="Offer3" style="width:300px;height:200px">
     </div>
     <div class="flip-box-back">
       <h2>First Time</h2>
@@ -86,8 +112,17 @@
 <br>
 <br>
 <hr>
-<img alt="Today Offer" src="<c:url value='/resources/img/bigimg.PNG'></c:url>" width=99%>
+
+<img alt="Today Offer" src="<c:url value='/resources/img/fa.jpg'></c:url>" width=100%>
+<hr>
+<br>
+ <img alt="Today Offer" src="<c:url value='/resources/img/bigimg.PNG'></c:url>" width=100%>
 <hr>
 
+
+
+<video autoplay muted loop id="myVideo">
+  <source src="<c:url value='/resources/img/video.mp4'></c:url>" type="video/mp4">
+</video>
 </body>
 </html>
